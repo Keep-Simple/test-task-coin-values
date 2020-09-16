@@ -141,7 +141,7 @@ export const DataTable: FC = () => {
                 </Table>
             </TableContainer>
             <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
+                rowsPerPageOptions={[20, 50, 100]}
                 component="div"
                 count={rows.length}
                 rowsPerPage={rowsPerPage}
