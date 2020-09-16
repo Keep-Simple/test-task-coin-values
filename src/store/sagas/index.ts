@@ -1,6 +1,6 @@
 import {all, call, put, takeEvery} from 'redux-saga/effects';
 import axios from 'axios';
-import {loadItemTrigger, loadItemType, loadPageTrigger, loadPageType} from "../types";
+import {loadItemFulfill, loadItemTrigger, loadItemType, loadPageFulfill, loadPageTrigger, loadPageType} from "../types";
 
 function* loadPage(action: any) {
     try {
@@ -26,7 +26,7 @@ function* loadPage(action: any) {
     } catch (e) {
         alert("Failed loading list");
     } finally {
-        yield put({type: "fulfill"});
+        yield put({type: loadPageFulfill});
     }
 }
 
@@ -38,7 +38,7 @@ function* loadItem(action: any) {
     } catch (e) {
         alert("Failed loading item");
     } finally {
-        yield put({type: "fulfill"});
+        yield put({type: loadItemFulfill});
     }
 }
 

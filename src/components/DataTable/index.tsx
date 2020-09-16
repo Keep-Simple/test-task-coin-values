@@ -39,30 +39,21 @@ const StyledCell = styled(TableCell)`
 `;
 
 export const DataTable: FC = () => {
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(20);
+    const rows = useSelector((state: IAppState) => state.itemsList);
     const classes = useStyles();
     const history = useHistory();
     const dispatch = useDispatch();
 
-    const rows = useSelector((state: IAppState) => state.itemsList);
-
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(20);
-
-    const handleChangePage = (e: unknown, newPage: number) => setPage(newPage);
-
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
+    useEffect(() => {
+        dispatch({type: loadPageTrigger, payload: {start: page * rowsPerPage, size: rowsPerPage}});
+    }, [page, dispatch, rowsPerPage]);
 
     const handleClick = useCallback(
         (symbol: string) => history.push(`/currency/${symbol}`),
         [history]
     );
-
-    useEffect(() => {
-        dispatch({type: loadPageTrigger, payload: {start: page * rowsPerPage, size: rowsPerPage}});
-    }, [page, dispatch, rowsPerPage]);
 
     return (
         <Paper className={classes.root}>
@@ -102,8 +93,11 @@ export const DataTable: FC = () => {
                 count={rows.total_count}
                 rowsPerPage={rowsPerPage}
                 page={page}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
+                onChangePage={(e: unknown, newPage: number) => setPage(newPage)}
+                onChangeRowsPerPage={(event: any) => {
+                    setRowsPerPage(+event.target.value);
+                    setPage(0);
+                }}
             />
         </Paper>
     );
