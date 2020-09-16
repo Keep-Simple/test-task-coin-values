@@ -1,8 +1,9 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, {FC, useCallback, useState} from 'react';
+import {makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
+import {useHistory} from "react-router-dom";
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
@@ -18,8 +19,8 @@ interface Column {
 }
 
 const columns: Column[] = [
-    { id: 'name', label: 'Name', minWidth: 170 },
-    { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
+    {id: 'name', label: 'Name', minWidth: 170},
+    {id: 'code', label: 'ISO\u00a0Code', minWidth: 100},
     {
         id: 'population',
         label: 'Population',
@@ -53,7 +54,7 @@ interface Data {
 
 function createData(name: string, code: string, population: number, size: number): Data {
     const density = population / size;
-    return { name, code, population, size, density };
+    return {name, code, population, size, density};
 }
 
 const rows = [
@@ -77,29 +78,36 @@ const rows = [
 const useStyles = makeStyles({
     root: {
         width: '100%',
+        marginTop: '5%'
     },
-    container: {
-        maxHeight: 440,
-    },
+    cell: {
+        "&:hover": {
+            cursor: 'pointer'
+        }
+    }
 });
 
-export default function StickyHeadTable() {
+export const DataTable: FC = () => {
     const classes = useStyles();
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const history = useHistory();
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
-    const handleChangePage = (event: unknown, newPage: number) => {
-        setPage(newPage);
-    };
+    const handleChangePage = (event: unknown, newPage: number) => setPage(newPage);
 
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
 
+    const handleClick = useCallback(
+        (name: string) => history.push(`/currency/${name}`),
+        [history]
+    );
+
     return (
         <Paper className={classes.root}>
-            <TableContainer className={classes.container}>
+            <TableContainer>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
@@ -107,7 +115,7 @@ export default function StickyHeadTable() {
                                 <TableCell
                                     key={column.id}
                                     align={column.align}
-                                    style={{ minWidth: column.minWidth }}
+                                    style={{minWidth: column.minWidth}}
                                 >
                                     {column.label}
                                 </TableCell>
@@ -117,11 +125,11 @@ export default function StickyHeadTable() {
                     <TableBody>
                         {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                             return (
-                                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                <TableRow hover role="checkbox" tabIndex={-1} key={row.code} className={classes.cell}>
                                     {columns.map((column) => {
                                         const value = row[column.id];
                                         return (
-                                            <TableCell key={column.id} align={column.align}>
+                                            <TableCell key={column.id} align={column.align} onClick={e => handleClick(column.label)}>
                                                 {column.format && typeof value === 'number' ? column.format(value) : value}
                                             </TableCell>
                                         );

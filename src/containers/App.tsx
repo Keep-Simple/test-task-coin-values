@@ -1,44 +1,21 @@
 import React from 'react';
 import {Provider} from 'react-redux';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {store} from '../store/store';
+import {Header} from "../components/Header";
+import {DataTable} from "../components/DataTable";
+import {DetailsPage} from "../components/DetailsPage";
 
 const App: React.FC = () => (
-            <Provider store={store}>
-                <Router>
-                    <div>
-                        <nav>
-                            <ul>
-                                <li>
-                                    <Link to="/">Home</Link>
-                                </li>
-                                <li>
-                                    <Link to="/about">About</Link>
-                                </li>
-                                <li>
-                                    <Link to="/users">Users</Link>
-                                </li>
-                            </ul>
-                        </nav>
-                        <Switch>
-                            <Route path="/about">
-                                {/*<About />*/}
-                            </Route>
-                            <Route path="/users">
-                                {/*<Users />*/}
-                            </Route>
-                            <Route path="/">
-                                {/*<Home />*/}
-                            </Route>
-                        </Switch>
-                    </div>
-                </Router>
-            </Provider>
+    <Provider store={store}>
+        <Header/>
+        <Router>
+            <Switch>
+                <Route exact path="/" component={DataTable} />
+                <Route exact path="/currency/:name" component={DetailsPage}/>
+            </Switch>
+        </Router>
+    </Provider>
 );
 
 export default App;
