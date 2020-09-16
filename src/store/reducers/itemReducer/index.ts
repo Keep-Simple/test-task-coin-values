@@ -1,9 +1,27 @@
-import {IAppState, loadItemType} from "../../types";
+import {IAppState, loadItemFulfill, loadItemTrigger, loadItemType} from "../../types";
 
-export default function (state: IAppState['selectedItem'] = [], {type, payload}: any) {
+const init = {
+    get: {} as IAppState['selectedItem']['get'],
+    isLoading: false
+};
+
+export default function (state: IAppState['selectedItem'] = init, {type, payload}: any) {
     switch (type) {
         case loadItemType:
-            return payload;
+            return {
+                ...state,
+                get: payload
+            };
+        case loadItemTrigger:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case loadItemFulfill:
+            return {
+                ...state,
+                isLoading: false
+            }
         default:
             return state;
     }

@@ -11,7 +11,7 @@ app.use(morgan('tiny'))
 app.use(cors())
 
 app.get('/*', (req,res) => {
-    let url = `https://pro-api.coinmarketcap.com/v1${req.originalUrl}`
+    let url = `https://pro-api.coinmarketcap.com/v1/${req.originalUrl}`
 
     axios.get(url,{headers: { 'X-CMC_PRO_API_KEY':process.env.CMC_API_KEY }})
         .then(response => {

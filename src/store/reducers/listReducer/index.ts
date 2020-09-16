@@ -1,9 +1,29 @@
-import {IAppState, loadPageType} from "../../types";
+import {IAppState, loadPageFulfill, loadPageTrigger, loadPageType} from "../../types";
 
-export default function (state: IAppState['itemsList'] = [], {type, payload}: any) {
+const init = {
+    get: [] as IAppState['itemsList']['get'],
+    isLoading: false,
+    total_count: 0
+};
+
+export default function (state: IAppState['itemsList'] = init, {type, payload}: any) {
     switch (type) {
         case loadPageType:
-            return payload;
+            return {
+                ...state,
+                get: payload.items,
+                total_count: payload.total
+            };
+        case loadPageTrigger:
+            return {
+                ...state,
+                isLoading: true
+            };
+        case loadPageFulfill:
+            return {
+                ...state,
+                isLoading: false
+            };
         default:
             return state;
     }
