@@ -1,4 +1,4 @@
-import {IAppState, loadItemFulfill, loadItemTrigger, loadItemType} from "../../types";
+import {IAppState, loadItemFulfill, loadItemTrigger, loadItemSuccess} from "../../types";
 
 const init = {
     get: {} as IAppState['selectedItem']['get'],
@@ -7,7 +7,7 @@ const init = {
 
 export default function (state: IAppState['selectedItem'] = init, {type, payload}: any) {
     switch (type) {
-        case loadItemType:
+        case loadItemSuccess:
             return {
                 ...state,
                 get: payload

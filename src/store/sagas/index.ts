@@ -1,13 +1,21 @@
 import {all, call, put, takeEvery} from 'redux-saga/effects';
 import axios from 'axios';
-import {loadItemFulfill, loadItemTrigger, loadItemType, loadPageFulfill, loadPageTrigger, loadPageType} from "../types";
+import {
+    loadItemFulfill,
+    loadItemTrigger,
+    loadItemSuccess,
+    loadPageFulfill,
+    loadPageTrigger,
+    loadPageSuccess,
+    CurrencyShortInfo, CurrencyDetailed
+} from "../types";
 
 function* loadPage(action: any) {
     try {
         const {start, size} = action.payload;
         const res = yield call(axios.get, `cryptocurrency/listings/latest?start=${start + 1}&limit=${size}`);
 
-        const toSave = res.data.data.map((i: any) => ({
+        const toSave: CurrencyShortInfo[] = res.data.data.map((i: any) => ({
             id: i.id,
             name: i.name,
             symbol: i.symbol,
@@ -18,7 +26,7 @@ function* loadPage(action: any) {
         }))
 
         yield put({
-            type: loadPageType, payload: {
+            type: loadPageSuccess, payload: {
                 items: toSave,
                 total: res.data.status.total_count
             }
@@ -32,9 +40,22 @@ function* loadPage(action: any) {
 
 function* loadItem(action: any) {
     try {
-        const res = yield call(axios.get, ``);
+        const key = process.env.REACT_APP_CMC_API_KEY2;
+        const res = yield call(axios.get, `https://api.lunarcrush.com/v2?data=assets&key=${key}&symbol=${action.payload}`);
 
-        yield put({type: loadItemType, payload: res.data.data})
+        const p = res.data.data[0];
+
+        const toSave: CurrencyDetailed = {
+            name: p.name,
+            market_cap: p.market_cap,
+            market_dominance: p.market_dominance,
+            max_supply: p.max_supply,
+            price: p.price,
+            volume_24h: p.volume_24h,
+            sparkline: p.timeSeries.map((i: any) => i.market_cap)
+        }
+
+        yield put({type: loadItemSuccess, payload: toSave})
     } catch (e) {
         alert("Failed loading item");
     } finally {

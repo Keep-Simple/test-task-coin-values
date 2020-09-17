@@ -10,7 +10,7 @@ export interface IAppState {
     }
 }
 
-type CurrencyShortInfo = {
+export type CurrencyShortInfo = {
     id: number;
     name: string;
     symbol: string;
@@ -20,11 +20,19 @@ type CurrencyShortInfo = {
     percent_change_24h: number
 }
 
-type CurrencyDetailed = {}
+export type CurrencyDetailed = {
+    name: string;
+    price: number;
+    market_cap: number;
+    market_dominance: number;
+    max_supply: string;
+    volume_24h: number;
+    sparkline: number[];
+}
 
-export const loadPageType = "LIST:LOAD_PAGE/SUCCESS";
+export const loadPageSuccess = "LIST:LOAD_PAGE/SUCCESS";
 export const loadPageTrigger = "LIST:LOAD_PAGE/TRIGGER";
 export const loadPageFulfill = "LIST:LOAD_PAGE/FULFILL";
-export const loadItemType = "ITEM:LOAD/SUCCESS";
+export const loadItemSuccess = "ITEM:LOAD/SUCCESS";
 export const loadItemTrigger = "ITEM:LOAD/TRIGGER";
 export const loadItemFulfill = "ITEM:LOAD/FULFILL";

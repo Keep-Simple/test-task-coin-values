@@ -1,4 +1,4 @@
-import {IAppState, loadPageFulfill, loadPageTrigger, loadPageType} from "../../types";
+import {IAppState, loadPageFulfill, loadPageTrigger, loadPageSuccess} from "../../types";
 
 const init = {
     get: [] as IAppState['itemsList']['get'],
@@ -8,7 +8,7 @@ const init = {
 
 export default function (state: IAppState['itemsList'] = init, {type, payload}: any) {
     switch (type) {
-        case loadPageType:
+        case loadPageSuccess:
             return {
                 ...state,
                 get: payload.items,
