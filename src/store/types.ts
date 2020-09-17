@@ -27,7 +27,14 @@ export type CurrencyDetailed = {
     market_dominance: number;
     max_supply: string;
     volume_24h: number;
-    sparkline: number[];
+    sparkline: SparkLineSlice[]
+}
+
+export type SparkLineSlice = {
+   time: string;
+   market_cap: number;
+   // price: number;
+   // volume: number;
 }
 
 export const loadPageSuccess = "LIST:LOAD_PAGE/SUCCESS";

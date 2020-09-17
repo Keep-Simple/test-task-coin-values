@@ -23,8 +23,7 @@ const columns = [
 
 const useStyles = makeStyles({
     root: {
-        width: '100%',
-        marginTop: '5%'
+        margin: '2% 10%'
     },
     row: {
         "&:hover": {
