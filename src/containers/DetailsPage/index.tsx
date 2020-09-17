@@ -4,11 +4,11 @@ import {useDispatch, useSelector} from "react-redux";
 import clsx from 'clsx';
 import {makeStyles} from '@material-ui/core/styles';
 import {IAppState, loadItemTrigger} from "../../store/types";
-import Title from "../../components/Title";
-import {Box, CircularProgress, Container, Grid, Paper} from "@material-ui/core";
+import {Box, Container, Grid, Paper} from "@material-ui/core";
 import {Chart} from "../../components/Chart";
 import Copyright from "../../components/Copyright";
 import LoadingWrapper from "../../components/LoadingWrapper";
+import {CurrencyInfo} from "../../components/CurrencyInfo";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
     },
     fixedHeight: {
-        height: 240,
+        height: 640,
     },
 }));
 
@@ -46,41 +46,37 @@ export const DetailsPage: FC = () => {
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     useEffect(() => {
-        dispatch({type: loadItemTrigger, payload: name});
+        const load = () => dispatch({type: loadItemTrigger, payload: name});
+        load();
+        const timer = setInterval(() => load(), 30000);
+        return () => clearInterval(timer);
     }, [name, dispatch]);
 
     return (
         <>
-                <main className={classes.content}>
-                    <Container maxWidth="lg" className={classes.container}>
-                        <Grid container spacing={3}>
-                            <Grid item xs={12} md={8} lg={9}>
-                                <Paper className={fixedHeightPaper}>
-                                    <LoadingWrapper isLoading={data.isLoading}>
-                                        <Chart data={data.get.sparkline}/>
-                                    </LoadingWrapper>
-                                </Paper>
-                            </Grid>
-                            <Grid item xs={12} md={4} lg={3}>
-                                <Paper className={fixedHeightPaper}>
-                                    <LoadingWrapper isLoading={data.isLoading}>
-                                        {/*<Deposits/>*/}
-                                    </LoadingWrapper>
-                                </Paper>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Paper className={classes.paper}>
-                                    <LoadingWrapper isLoading={data.isLoading}>
-                                        {/*<Orders/>*/}
-                                    </LoadingWrapper>
-                                </Paper>
-                            </Grid>
+            <main className={classes.content}>
+                <Container maxWidth="xl" className={classes.container}>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} md={8} lg={9}>
+                            <Paper className={fixedHeightPaper}>
+                                <LoadingWrapper isLoading={data.isLoading}>
+                                    <Chart {...data}/>
+                                </LoadingWrapper>
+                            </Paper>
                         </Grid>
-                        <Box pt={4}>
-                            <Copyright/>
-                        </Box>
-                    </Container>
-                </main>
+                        <Grid item xs={12} md={4} lg={3}>
+                            <Paper className={fixedHeightPaper}>
+                                <LoadingWrapper isLoading={data.isLoading}>
+                                    <CurrencyInfo {...data} />
+                                </LoadingWrapper>
+                            </Paper>
+                        </Grid>
+                    </Grid>
+                    <Box pt={4}>
+                        <Copyright/>
+                    </Box>
+                </Container>
+            </main>
         </>
     );
 }

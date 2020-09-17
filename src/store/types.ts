@@ -25,7 +25,9 @@ export type CurrencyDetailed = {
     price: number;
     market_cap: number;
     market_dominance: number;
-    max_supply: string;
+    tweets: number;
+    news: number;
+    alt_rank: number;
     volume_24h: number;
     sparkline: SparkLineSlice[]
 }

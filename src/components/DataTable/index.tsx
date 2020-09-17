@@ -46,7 +46,10 @@ export const DataTable: FC = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch({type: loadPageTrigger, payload: {start: page * rowsPerPage, size: rowsPerPage}});
+        const load = () => dispatch({type: loadPageTrigger, payload: {start: page * rowsPerPage, size: rowsPerPage}});
+        load();
+        const timer = setInterval(() => load(), 30000);
+        return () => clearInterval(timer);
     }, [page, dispatch, rowsPerPage]);
 
     const handleClick = useCallback(

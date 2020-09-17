@@ -51,7 +51,9 @@ function* loadItem(action: any) {
             name: p.name,
             market_cap: p.market_cap,
             market_dominance: p.market_dominance,
-            max_supply: p.max_supply,
+            alt_rank: p.alt_rank,
+            tweets: p.tweets,
+            news: p.news,
             price: p.price,
             volume_24h: p.volume_24h,
             sparkline: p.timeSeries.slice(0, -1).map((t: any, i: number) => ({

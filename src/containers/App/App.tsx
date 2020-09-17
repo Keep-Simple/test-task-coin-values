@@ -8,8 +8,8 @@ import {DetailsPage} from "../DetailsPage";
 
 const App: React.FC = () => (
     <Provider store={store}>
-        <Header/>
         <Router>
+            <Header/>
             <Switch>
                 <Route exact path="/" component={DataTable} />
                 <Route exact path="/currency/:name" component={DetailsPage}/>

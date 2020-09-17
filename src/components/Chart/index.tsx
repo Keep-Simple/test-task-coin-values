@@ -2,18 +2,17 @@ import React, {FC} from "react";
 import {useTheme} from '@material-ui/core/styles';
 import Title from "../../components/Title";
 import {Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
-import {CurrencyDetailed} from "../../store/types";
+import {IAppState} from "../../store/types";
 
-export const Chart: FC<{ data: CurrencyDetailed['sparkline'] }> = ({data}) => {
+export const Chart: FC<IAppState['selectedItem']> = ({get: {sparkline, name}}) => {
     const theme = useTheme();
 
-    console.log(data);
     return (
         <>
-            <Title>Market Cap changes this week</Title>
+            <Title>{`${name} Charts`}</Title>
             <ResponsiveContainer>
                 <LineChart
-                    data={data}
+                    data={sparkline}
                     margin={{
                         top: 16,
                         right: 16,
@@ -24,8 +23,8 @@ export const Chart: FC<{ data: CurrencyDetailed['sparkline'] }> = ({data}) => {
                     <XAxis dataKey="time" stroke={theme.palette.text.secondary}/>
                     <YAxis stroke={theme.palette.text.secondary}>
                     </YAxis>
-                    <Tooltip />
-                    <Legend />
+                    <Tooltip/>
+                    <Legend/>
                     <Line type="monotone" dataKey="market_cap" stroke="#8884d8"/>
                     <Line type="monotone" dataKey="market_cap_global" stroke="#82ca9d" activeDot={{r: 8}}/>
                 </LineChart>
