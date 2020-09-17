@@ -35,8 +35,7 @@ export type CurrencyDetailed = {
 export type SparkLineSlice = {
    time: string;
    market_cap: number;
-   // price: number;
-   // volume: number;
+   market_cap_global: number;
 }
 
 export const loadPageSuccess = "LIST:LOAD_PAGE/SUCCESS";

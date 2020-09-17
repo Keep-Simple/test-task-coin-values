@@ -53,7 +53,6 @@ export const DetailsPage: FC = () => {
     }, [name, dispatch]);
 
     return (
-        <>
             <main className={classes.content}>
                 <Container maxWidth="xl" className={classes.container}>
                     <Grid container spacing={3}>
@@ -77,6 +76,5 @@ export const DetailsPage: FC = () => {
                     </Box>
                 </Container>
             </main>
-        </>
     );
 }
